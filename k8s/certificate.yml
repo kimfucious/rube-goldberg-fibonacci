@@ -1,0 +1,22 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: techsarcana-com-tls
+spec:
+  secretName: techsarcana-com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: techsarcana.com
+  dnsNames:
+    - techsarcana.com
+    - fibify.techsarcana.com
+    - www.techsarcana.com
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - techsarcana.com
+          - fibify.techsarcana.com
+          - www.techsarcana.com
