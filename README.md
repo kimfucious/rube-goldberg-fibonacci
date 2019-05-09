@@ -2,9 +2,9 @@
 
 ![self-operating napkin](https://upload.wikimedia.org/wikipedia/commons/a/a9/Rube_Goldberg%27s_%22Self-Operating_Napkin%22_%28cropped%29.gif)
 
-This repo is a demonstration of how to use multiple Docker containers as micro-services to build an web application.
+This repo is a demonstration of how to use multiple Docker containers as micro-services to build a web application.
 
-It is intentionally, ridiculously over-engineered for demonstration purposes.
+It is intentionally (and ridiculously) over-engineered for demonstration purposes.
 
 The concept is simple: Enter a number, and the app will provide the value from the Fibonacci sequence at the index of the number that was entered.
 
@@ -23,7 +23,7 @@ Each of these `services`, some of which are `micro services`, run in their own D
 
 This demo can be run locally on a dev machine, using Docker Compose and/or Kubernetes (kubectl), and on Google Kubernetes Engine.
 
-## To Run Locally in developer mode with Docker Compose (not Kubernetes)
+## To Run Locally with Docker Compose (not Kubernetes)
 
 ### Prerequisites
 
@@ -32,8 +32,16 @@ This demo can be run locally on a dev machine, using Docker Compose and/or Kuber
 
 ### 1) Clone this repo
 
+#### With HTTPS
+
 ```shell
 git clone https://github.com/kimfucious/rube-goldberg-fibonacci.git
+```
+
+#### With SSH
+
+```shell
+git@github.com:kimfucious/rube-goldberg-fibonacci.git
 ```
 
 ### 2) Change into the directory where you cloned this repo
@@ -48,7 +56,7 @@ The first time this runs, it takes a while.
 
 When it's done, you're looking for a few key lines of code to ensure that Docker Compose ran successfully.
 
-The main block is the main one to watch out for, which should be at the bottom, indicating that the client app is now running:
+This main block is the main one to watch out for, which should be at the bottom, indicating that the client app is now running:
 
 ```shell
 client_1    | Compiled successfully!
@@ -95,7 +103,9 @@ To shut the app down, when it has been started with Docker Compose, press `CTRL+
 
 You can confirm that the containers have stopped by running `docker ps`.
 
-## :warning: Everything below this line is a work in progress and most likely won't work
+### :warning: Everything below this line is a work in progress and most likely won't work
+
+I'll remove this message once things are working consistently
 
 ## To Run Locally with Kubernetes
 
@@ -150,6 +160,8 @@ deployment.apps/nginx-ingress-controller created
 kubectl create secret generic pgpassword --from-literal PGPASSWORD=pgpassword123
 ```
 
+> :point_up: You can replace "pgpassword123" with whatever you like.
+
 should result in:
 
 ```shell
@@ -161,6 +173,8 @@ secret/pgpassword created
 ```shell
 kubectl apply -f k8s-local/
 ```
+
+> :warning: Postgres is throwing a warning here...working on a solution
 
 ```shell
 kubectl get pods
