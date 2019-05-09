@@ -1,4 +1,4 @@
-# The Rube Goldburg Fibonacci Calculator
+# The Rube Goldberg Fibonacci Calculator
 
 ![self-operating napkin](https://upload.wikimedia.org/wikipedia/commons/a/a9/Rube_Goldberg%27s_%22Self-Operating_Napkin%22_%28cropped%29.gif)
 
@@ -174,7 +174,14 @@ secret/pgpassword created
 kubectl apply -f k8s-local/
 ```
 
-> :warning: Postgres is throwing a warning here...working on a solution
+> :warning: Postgres is throwing an error:
+
+```shell
+2019-05-09 13:17:07.089 UTC [77] FATAL:  data directory "/var/lib/postgresql/data" has wrong ownership
+2019-05-09 13:17:07.089 UTC [77] HINT:  The server must be started by the user that owns the data directory.
+```
+
+... working on a solution :thinking:
 
 ```shell
 kubectl get pods
