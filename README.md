@@ -58,7 +58,7 @@ When it's done, you're looking for a few key lines of code to ensure that Docker
 
 This main block is the main one to watch out for, which should be at the bottom, indicating that the client app is now running:
 
-```shell
+```console
 client_1    | Compiled successfully!
 client_1    |
 client_1    | You can now view client in the browser.
@@ -71,19 +71,34 @@ client_1    | To create a production build, use npm run build.
 client_1    |
 ```
 
-> :point_up: Although the client is running on port 3000, per the above, the Ngnix container is serving it up on port 1234, as http://localhost:1234.
+> :point_up: Although the client is running on port 3000, per the above, nginx is serving it up on port 1234, as http://localhost:1234.
+
+You may (probably will) see some NPM related warnings during the Docker Compose Up process. You can safely ignore things like the below:
+
+```console
+npm WARN deprecated core-js@1.2.7: core-js@<2.6.5 is no longer maintained. Please, upgrade to core-js@3 or at least to actual version of core-js@2.
+npm WARN deprecated flatten@1.0.2: I wrote this module a very long time ago; you should use something else.
+npm WARN deprecated left-pad@1.3.0: use String.prototype.padStart()
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules/jest-haste-map/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules/chokidar/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@2.0.6 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.0.6: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+```
 
 ### 4) View the running Docker containers
 
 Open a **new** terminal window, leaving the Docker Compose terminal running, and run the following command:
 
-```shell
+```console
 docker ps
 ```
 
 This should show something like the below (with different container IDs and time data):
 
-```shell
+```console
 CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS              PORTS                  NAMES
 02514a41755f        postgres:latest                "docker-entrypoint.s…"   4 minutes ago       Up 4 minutes        5432/tcp               rubegoldbergfibonacci_postgres_1
 ce28a9f9fe29        rubegoldbergfibonacci_nginx    "nginx -g 'daemon of…"   4 minutes ago       Up 4 minutes        0.0.0.0:1234->80/tcp   rubegoldbergfibonacci_nginx_1
@@ -127,7 +142,7 @@ The bottom line is that you need to be able to run `kubectl` from the command li
 
 ### 1) Clone this repo
 
-```shell
+```console
 git clone https://github.com/kimfucious/rube-goldberg-fibonacci.git
 ```
 
@@ -135,13 +150,13 @@ git clone https://github.com/kimfucious/rube-goldberg-fibonacci.git
 
 ### 3) Run `kubernetes/ingress-nginx` prerequisite generic deployment command
 
-```shell
+```console
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 ```
 
 This should result in the following output:
 
-```shell
+```console
 namespace/ingress-nginx created
 configmap/nginx-configuration created
 configmap/tcp-services created
@@ -156,7 +171,7 @@ deployment.apps/nginx-ingress-controller created
 
 ### 5) Create kubectl secret for Postgres
 
-```shell
+```console
 kubectl create secret generic pgpassword --from-literal PGPASSWORD=pgpassword123
 ```
 
@@ -164,56 +179,56 @@ kubectl create secret generic pgpassword --from-literal PGPASSWORD=pgpassword123
 
 should result in:
 
-```shell
+```console
 secret/pgpassword created
 ```
 
 ### 6) Run `kubectl apply` on the k8s-local directory
 
-```shell
+```console
 kubectl apply -f k8s-local/
 ```
 
 > :warning: Postgres is throwing an error:
 
-```shell
+```console
 2019-05-09 13:17:07.089 UTC [77] FATAL:  data directory "/var/lib/postgresql/data" has wrong ownership
 2019-05-09 13:17:07.089 UTC [77] HINT:  The server must be started by the user that owns the data directory.
 ```
 
 ... working on a solution :thinking:
 
-```shell
+```console
 kubectl get pods
 ```
 
-```shell
+```console
 kubectl get services
 ```
 
 ## Clean up
 
-### If you're lazy and you don't care that you're deleting all containers on your system
+### If you're lazy and you don't care that you're deleting all containers from your system
+
+```console
+docker system prune -a
+```
 
 > :point_up: Be sure you're okay with removing **everything**, before running this command!
 
 Read more about `docker system prune` [here](https://docs.docker.com/engine/reference/commandline/system_prune/) to be sure.
 
-```shell
-docker system prune --all
-```
-
 ### If you want to be more selective in your container deletion
 
 #### View all stopped Docker containers
 
-```shell
+```console
 docker container ls -f 'status=exited'
 ```
 
 #### Look for the entries matching the `IMAGE` names in the resulting list
 
-```shell
+```console
 CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS                         PORTS                NAMES
 02514a41755f        postgres:latest                "docker-entrypoint.s…"   32 minutes ago      Exited (0) 12 minutes ago                           rubegoldbergfibonacci_postgres_1
 ce28a9f9fe29        rubegoldbergfibonacci_nginx    "nginx -g 'daemon of…"   32 minutes ago      Exited (0) 12 minutes ago                           rubegoldbergfibonacci_nginx_1
@@ -227,19 +242,19 @@ ce28a9f9fe29        rubegoldbergfibonacci_nginx    "nginx -g 'daemon of…"   32
 
 You can remove one or more containers with the `docker rm` command
 
-```shell
+```console
 docker rm 02514a41755f ce28a9f9fe29
 ```
 
 #### List all Docker images
 
-```shell
+```console
 docker images
 ```
 
 #### Look for the entries matching the `IMAGE ID` names in the resulting list
 
-```shell
+```console
 REPOSITORY                     TAG                 IMAGE ID            CREATED              SIZE
 rubegoldbergfibonacci_api      latest              315bf9a28525        About a minute ago   97.9MB
 rubegoldbergfibonacci_nginx    latest              7ca782d6e7f1        2 minutes ago        109MB
@@ -254,6 +269,6 @@ postgres                       latest              3eda284d1840        18 hours 
 
 You can remove one or more images with the `docker rmi` command
 
-```shell
+```console
 docker rmi 02514a41755f 7ca782d6e7f1
 ```

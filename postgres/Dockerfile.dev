@@ -1,0 +1,2 @@
+FROM postgres:latest
+RUN chown /var/lib/postgresql/data pguser:pguser 
