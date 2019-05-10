@@ -92,7 +92,7 @@ npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@
 
 Open a **new** terminal window, leaving the Docker Compose terminal running, and run the following command:
 
-```console
+```shell
 docker ps
 ```
 
@@ -142,7 +142,7 @@ The bottom line is that you need to be able to run `kubectl` from the command li
 
 ### 1) Clone this repo
 
-```console
+```shell
 git clone https://github.com/kimfucious/rube-goldberg-fibonacci.git
 ```
 
@@ -150,7 +150,7 @@ git clone https://github.com/kimfucious/rube-goldberg-fibonacci.git
 
 ### 3) Run `kubernetes/ingress-nginx` prerequisite generic deployment command
 
-```console
+```shell
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 ```
 
@@ -171,7 +171,7 @@ deployment.apps/nginx-ingress-controller created
 
 ### 5) Create kubectl secret for Postgres
 
-```console
+```shell
 kubectl create secret generic pgpassword --from-literal PGPASSWORD=pgpassword123
 ```
 
@@ -185,7 +185,7 @@ secret/pgpassword created
 
 ### 6) Run `kubectl apply` on the k8s-local directory
 
-```console
+```shell
 kubectl apply -f k8s-local/
 ```
 
@@ -198,11 +198,11 @@ kubectl apply -f k8s-local/
 
 ... working on a solution :thinking:
 
-```console
+```shell
 kubectl get pods
 ```
 
-```console
+```shell
 kubectl get services
 ```
 
@@ -210,7 +210,7 @@ kubectl get services
 
 ### If you're lazy and you don't care that you're deleting all containers from your system
 
-```console
+```shell
 docker system prune -a
 ```
 
@@ -222,7 +222,7 @@ Read more about `docker system prune` [here](https://docs.docker.com/engine/refe
 
 #### View all stopped Docker containers
 
-```console
+```shell
 docker container ls -f 'status=exited'
 ```
 
@@ -242,13 +242,13 @@ ce28a9f9fe29        rubegoldbergfibonacci_nginx    "nginx -g 'daemon of…"   32
 
 You can remove one or more containers with the `docker rm` command
 
-```console
+```shell
 docker rm 02514a41755f ce28a9f9fe29
 ```
 
 #### List all Docker images
 
-```console
+```shell
 docker images
 ```
 
@@ -269,6 +269,6 @@ postgres                       latest              3eda284d1840        18 hours 
 
 You can remove one or more images with the `docker rmi` command
 
-```console
+```shell
 docker rmi 02514a41755f 7ca782d6e7f1
 ```
